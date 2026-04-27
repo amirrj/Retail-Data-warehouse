@@ -1,2 +1,3 @@
 # Retail-Data_warehouse
-Data warehouse design and production for a retail dataset
+
+Developed a fully functional OLAP data warehouse by extracting data from flat files and loading it into a relational database. Designed and implemented a dimensional data model, including fact and dimension tables, to support analytical reporting. Built the warehouse using SQL, applying indexing strategies to optimise query performance and improve data retrieval efficiency. Created data cubes to enable multidimensional analysis and enhance reporting functionality. Conducted query exploration and performance tuning to ensure efficient data processing and scalable analytics.

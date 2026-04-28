@@ -1,5 +1,5 @@
 
--- CREATE STAGING TABLE
+-- CREATE and POPULATE STAGING TABLE
 
 
 /*
@@ -52,7 +52,7 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 */
 
-
+SELECT * FROM RetailStaging
 
 
 

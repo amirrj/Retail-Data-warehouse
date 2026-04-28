@@ -1,3 +1,5 @@
+-- Create dimension tables
+
 DROP TABLE IF EXISTS dim_payment;
 CREATE TABLE dim_payment (
 	payment_SK INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -31,7 +33,7 @@ CREATE TABLE dim_store(
 );
 
 DROP TABLE IF EXISTS dim_date;
-CREATE TABLE dim_date
+CREATE TABLE dim_date(
 	date_SK INT PRIMARY KEY, 
 	date_value DATE NOT NULL,
 	day INT, 
@@ -43,3 +45,12 @@ CREATE TABLE dim_date
 	day_of_week INT,
 	is_weekend BOOLEAN
 );
+
+DROP TABLE IF EXISTS dim_time;
+CREATE TABLE dim_time(
+	time_SK INT PRIMARY KEY,
+	full_time TIME NOT NULL,
+	hour_24 INT NOT NULL,
+	minute INT NOT NULL,
+	time_period VARCHAR(255) NOT NULL, -- Morning, afternoon, evening 
+)

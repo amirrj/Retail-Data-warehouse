@@ -2,11 +2,11 @@
 -- CREATE and POPULATE STAGING TABLE
 
 
-/*
 DROP TABLE IF EXISTS RetailStaging;
 CREATE TABLE RetailStaging(
-	order_id INT NOT NULL PRIMARY KEY,
+	order_id INT NOT NULL,
 	order_item_id INT NOT NULL,
+	PRIMARY KEY(order_id, order_item_id),
 	order_date DATETIME NOT NULL, 
 	status VARCHAR(255) NOT NULL, 
 	payment_method VARCHAR(255) NOT NULL,
@@ -34,25 +34,27 @@ CREATE TABLE RetailStaging(
 	profit FLOAT NOT NULL,
 	shipping_fee FLOAT NOT NULL,
 	order_total FLOAT NOT NULL
-)*/
+)
 
 
 -- INSERT DATA INTO STAGING TABLE FROM FLAT FILE
 
 --  Allow access to insert dta from local file
-/*
+
 SET GLOBAL local_infile = 1
 
 TRUNCATE TABLE RetailStaging;
-LOAD DATA LOCAL INFILE '/Users/amirjaved/Documents/SQL\ OLAP\ Project/retail_sales_flat.csv'
+
+LOAD DATA LOCAL INFILE '/Users/amirjaved/Documents/Retail-Data-Warehouse/data/retail_sales_flat.csv'
 INTO TABLE RetailStaging
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-*/
+IGNORE 1 ROWS;
+
 
 SELECT * FROM RetailStaging
+
 
 
 

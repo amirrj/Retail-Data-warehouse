@@ -10,5 +10,5 @@ For GDPR purposes, this project does not feature real life data - all data is sy
 
 **Software / technologies**
 
-DBDiagram.io - Create inital ERD mock up
+DBDiagram.io - Create inital ERD mock up \n
 SQL - Database manipulation

@@ -1,3 +1,14 @@
-# Retail-Data_warehouse
+# Retail Data Warehouse
 
-Developed a fully functional OLAP data warehouse by extracting data from flat files and loading it into a relational database. Designed and implemented a dimensional data model, including fact and dimension tables, to support analytical reporting. Built the warehouse using SQL, applying indexing strategies to optimise query performance and improve data retrieval efficiency. Created data cubes to enable multidimensional analysis and enhance reporting functionality. Conducted query exploration and performance tuning to ensure efficient data processing and scalable analytics.
+**Objective**
+
+The objective of this project is to design and create an OLAP for a retail business use. 
+
+**Data** 
+
+For GDPR purposes, this project does not feature real life data - all data is synthetic. The intial data state is a flat file containing all business transactions for a retail business.
+
+**Software / technologies**
+
+DBDiagram.io - Create inital ERD mock up
+SQL - Database manipulation

@@ -1,20 +1,26 @@
 -- Create dimension tables
 
+DROP TABLE IF EXISTS fact_sales;
 DROP TABLE IF EXISTS dim_payment;
+DROP TABLE IF EXISTS dim_status;
+DROP TABLE IF EXISTS dim_customer;
+DROP TABLE IF EXISTS dim_store;
+DROP TABLE IF EXISTS dim_date;
+DROP TABLE IF EXISTS dim_time;
+DROP TABLE IF EXISTS dim_product;
+
 
 CREATE TABLE dim_payment (
 	payment_SK INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	payment_method VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS dim_status;
 
 CREATE TABLE dim_status(
 	status_SK INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 	status VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS dim_customer;
 
 CREATE TABLE dim_customer(
 	customer_SK INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
@@ -24,7 +30,6 @@ CREATE TABLE dim_customer(
 	email VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS dim_store;
 
 CREATE TABLE dim_store(
 	store_SK INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +41,6 @@ CREATE TABLE dim_store(
 	channel VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS dim_date;
 
 CREATE TABLE dim_date(
 	date_SK INT PRIMARY KEY, 
@@ -52,7 +56,6 @@ CREATE TABLE dim_date(
 	is_weekend BOOLEAN
 );
 
-DROP TABLE IF EXISTS dim_time;
 
 CREATE TABLE dim_time(
 	time_SK INT PRIMARY KEY,
@@ -62,7 +65,6 @@ CREATE TABLE dim_time(
 	time_period VARCHAR(255) NOT NULL -- Morning, afternoon, evening 
 );
 
-DROP TABLE IF EXISTS dim_product;
 
 CREATE TABLE dim_product(
 	product_SK INT AUTO_INCREMENT PRIMARY KEY ,
@@ -73,7 +75,6 @@ CREATE TABLE dim_product(
 	brand VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS fact_sales;
 
 CREATE TABLE fact_sales(
 	sales_SK INT AUTO_INCREMENT PRIMARY KEY,
@@ -101,18 +102,20 @@ CREATE TABLE fact_sales(
 	profit DECIMAL(10, 2) NOT NULL,
 	shipping_fee DECIMAL(10, 2) NOT NULL,
 	order_total DECIMAL(10, 2) NOT NULL
-)
+);
 
--- CREATE FOREIGN KEY
+-- CREATE FOREIGN KEYS
+
 ALTER TABLE fact_sales
+ADD CONSTRAINT fk_date FOREIGN KEY (date_SK) REFERENCES dim_date (date_SK),
+ADD CONSTRAINT fk_time FOREIGN KEY (time_sk) REFERENCES dim_time (time_SK),
 ADD CONSTRAINT fk_payment FOREIGN KEY (payment_SK) REFERENCES dim_payment(payment_SK),
 ADD CONSTRAINT fk_status FOREIGN KEY (status_SK) REFERENCES dim_status(status_SK),
 ADD CONSTRAINT fk_customer FOREIGN KEY (customer_SK) REFERENCES dim_customer(customer_SK),
 ADD CONSTRAINT fk_store FOREIGN KEY (store_SK) REFERENCES dim_store(store_SK),
 ADD CONSTRAINT fk_product FOREIGN KEY (product_SK) REFERENCES dim_product(product_SK);
 
-
--- populate dim tables
+-- POPULATE DIM TABLES
 
 INSERT INTO dim_payment (payment_method)
 SELECT DISTINCT payment_method
@@ -172,6 +175,55 @@ FROM RetailStaging;
 CALL populate_dim_date();
 CALL populate_dim_time();
 
+-- POPULATE FACTS Table
+INSERT INTO fact_sales (
+order_id,
+order_item_id,
+date_SK,
+time_SK,
+payment_SK,
+status_SK,
+customer_SK,
+store_SK,
+product_SK,
+unit_cost,
+unit_price,
+quantity,
+discount_rate,
+discount_amount,
+net_sales,
+profit,
+shipping_fee,
+order_total
+)
+SELECT DISTINCT 
+rs.order_id,
+rs.order_item_id,
+ddate.date_SK,
+dtime.time_SK,
+dpayment.payment_SK,
+dstatus.status_SK,
+dcustomer.customer_SK,
+dstore.store_SK,
+dproduct.product_SK,
+rs.unit_cost,
+rs.unit_price,
+rs.quantity,
+rs.discount_rate,
+rs.discount_amount,
+rs.net_sales,
+rs.profit,
+rs.shipping_fee,
+rs.order_total
+FROM RetailStaging rs 
+JOIN dim_date ddate ON DATE(rs.order_date) = ddate.date_value 
+JOIN dim_time dtime ON TIME(rs.order_date) = dtime.full_time 	
+JOIN dim_payment dpayment ON rs.payment_method = dpayment.payment_method 
+JOIN dim_status dstatus ON rs.status = dstatus.status
+JOIN dim_customer dcustomer ON rs.customer_id = dcustomer.customer_id 
+JOIN dim_store dstore ON rs.store_id = dstore.store_id
+JOIN dim_product dproduct ON rs.product_id = dproduct.product_id;
 
 
+SELECT * FROM fact_sales fs;
 

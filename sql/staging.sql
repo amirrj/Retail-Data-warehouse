@@ -26,22 +26,22 @@ CREATE TABLE RetailStaging(
 	category VARCHAR(255) NOT NULL,
 	brand VARCHAR(255) NOT NULL,
 	quantity INT NOT NULL,
-	unit_cost FLOAT NOT NULL,
-	unit_price FLOAT NOT NULL, 
+	unit_cost DECIMAL(10, 2) NOT NULL,
+	unit_price DECIMAL(10, 2)  NOT NULL, 
 	discount_rate FLOAT NOT NULL, 
-	discount_amount FLOAT NOT NULL,
-	net_sales FLOAT NOT NULL,
-	profit FLOAT NOT NULL,
-	shipping_fee FLOAT NOT NULL,
-	order_total FLOAT NOT NULL
-)
+	discount_amount DECIMAL(10, 2)  NOT NULL,
+	net_sales DECIMAL(10, 2)  NOT NULL,
+	profit DECIMAL(10, 2)  NOT NULL,
+	shipping_fee DECIMAL(10, 2)  NOT NULL,
+	order_total DECIMAL(10, 2)  NOT NULL
+);
 
 
 -- INSERT DATA INTO STAGING TABLE FROM FLAT FILE
 
 --  Allow access to insert dta from local file
 
-SET GLOBAL local_infile = 1
+SET GLOBAL local_infile = 1;
 
 TRUNCATE TABLE RetailStaging;
 

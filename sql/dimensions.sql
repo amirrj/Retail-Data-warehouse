@@ -35,7 +35,6 @@ CREATE TABLE dim_store(
 	store_SK INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	store_id INT NOT NULL,
 	store_name VARCHAR(255),
-	country VARCHAR(255),
 	city VARCHAR(255),
 	region VARCHAR(255),
 	channel VARCHAR(255)
@@ -141,15 +140,13 @@ FROM RetailStaging;
 INSERT INTO dim_store (
 	store_id,
 	store_name,
-	country,
 	city,
 	region,
 	channel
 )
-SELECT DISTINCT
+SELECT 
 	store_id,
 	store_name,
-	country,
 	city,
 	region,
 	channel
@@ -225,5 +222,5 @@ JOIN dim_store dstore ON rs.store_id = dstore.store_id
 JOIN dim_product dproduct ON rs.product_id = dproduct.product_id;
 
 
-SELECT * FROM fact_sales fs;
+SELECT Count(*) FROM fact_sales ;
 
